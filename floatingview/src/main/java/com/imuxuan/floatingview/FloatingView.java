@@ -60,10 +60,10 @@ public class FloatingView implements IFloatingView {
                     return;
                 }
                 if (ViewCompat.isAttachedToWindow(mEnFloatingView) && getContainer() != null) {
-                    getContainer().removeView(mEnFloatingView);
                     if (mLifeStateListener != null) {
                         mLifeStateListener.onRemoveView(mEnFloatingView);
                     }
+                    getContainer().removeView(mEnFloatingView);
                 }
                 mEnFloatingView = null;
             }
@@ -125,10 +125,10 @@ public class FloatingView implements IFloatingView {
     @Override
     public FloatingView detach(FrameLayout container) {
         if (mEnFloatingView != null && container != null && ViewCompat.isAttachedToWindow(mEnFloatingView)) {
-            container.removeView(mEnFloatingView);
             if (mLifeStateListener != null) {
                 mLifeStateListener.onRemoveView(mEnFloatingView);
             }
+            container.removeView(mEnFloatingView);
         }
         if (getContainer() == container) {
             mContainer = null;
