@@ -21,7 +21,7 @@ import com.imuxuan.floatingview.utils.SystemUtils;
  */
 public class FloatingMagnetView extends FrameLayout {
 
-    public static final int MARGIN_EDGE = 13;
+    private int mMarginEdge = 13;
     private float mOriginalRawX;
     private float mOriginalRawY;
     private float mOriginalX;
@@ -131,7 +131,7 @@ public class FloatingMagnetView extends FrameLayout {
     }
 
     public void moveToEdge(boolean isLeft, boolean isLandscape) {
-        float moveDistance = isLeft ? MARGIN_EDGE : mScreenWidth - MARGIN_EDGE;
+        float moveDistance = isLeft ? mMarginEdge : mScreenWidth - mMarginEdge;
         float y = getY();
         if (!isLandscape && mPortraitY != 0) {
             y = mPortraitY;
@@ -214,5 +214,9 @@ public class FloatingMagnetView extends FrameLayout {
         if (isLandscape) {
             mPortraitY = getY();
         }
+    }
+
+    public void setMarginEdge(int marginEdge) {
+        mMarginEdge = marginEdge;
     }
 }

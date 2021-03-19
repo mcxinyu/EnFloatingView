@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 public class FloatingView implements IFloatingView {
 
     private FloatingMagnetView mEnFloatingView;
+    private LifeStateListener mLifeStateListener;
     private static volatile FloatingView mInstance;
     private WeakReference<FrameLayout> mContainer;
     @LayoutRes
@@ -60,6 +61,9 @@ public class FloatingView implements IFloatingView {
                 }
                 if (ViewCompat.isAttachedToWindow(mEnFloatingView) && getContainer() != null) {
                     getContainer().removeView(mEnFloatingView);
+                    if (mLifeStateListener != null) {
+                        mLifeStateListener.onRemoveView(mEnFloatingView);
+                    }
                 }
                 mEnFloatingView = null;
             }
@@ -106,6 +110,9 @@ public class FloatingView implements IFloatingView {
         }
         mContainer = new WeakReference<>(container);
         container.addView(mEnFloatingView);
+        if (mLifeStateListener != null) {
+            mLifeStateListener.onAddView(mEnFloatingView);
+        }
         return this;
     }
 
@@ -119,6 +126,9 @@ public class FloatingView implements IFloatingView {
     public FloatingView detach(FrameLayout container) {
         if (mEnFloatingView != null && container != null && ViewCompat.isAttachedToWindow(mEnFloatingView)) {
             container.removeView(mEnFloatingView);
+            if (mLifeStateListener != null) {
+                mLifeStateListener.onRemoveView(mEnFloatingView);
+            }
         }
         if (getContainer() == container) {
             mContainer = null;
@@ -166,11 +176,19 @@ public class FloatingView implements IFloatingView {
         return this;
     }
 
+    public FloatingView setLifeStateListener(LifeStateListener lifeStateListener) {
+        mLifeStateListener = lifeStateListener;
+        return this;
+    }
+
     private void addViewToWindow(final View view) {
         if (getContainer() == null) {
             return;
         }
         getContainer().addView(view);
+        if (mLifeStateListener != null) {
+            mLifeStateListener.onAddView(mEnFloatingView);
+        }
     }
 
     private FrameLayout getContainer() {
