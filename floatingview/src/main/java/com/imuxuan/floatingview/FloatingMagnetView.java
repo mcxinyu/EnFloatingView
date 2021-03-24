@@ -21,20 +21,20 @@ import com.imuxuan.floatingview.utils.SystemUtils;
  */
 public class FloatingMagnetView extends FrameLayout {
 
-    private int mMarginEdge = 13;
-    private float mOriginalRawX;
-    private float mOriginalRawY;
-    private float mOriginalX;
-    private float mOriginalY;
-    private MagnetViewListener mMagnetViewListener;
-    private static final int TOUCH_TIME_THRESHOLD = 150;
-    private long mLastTouchDownTime;
+    protected int mMarginEdge = 13;
+    protected float mOriginalRawX;
+    protected float mOriginalRawY;
+    protected float mOriginalX;
+    protected float mOriginalY;
+    protected MagnetViewListener mMagnetViewListener;
+    protected static final int TOUCH_TIME_THRESHOLD = 150;
+    protected long mLastTouchDownTime;
     protected MoveAnimator mMoveAnimator;
     protected int mScreenWidth;
-    private int mScreenHeight;
-    private int mStatusBarHeight;
-    private boolean isNearestLeft = true;
-    private float mPortraitY;
+    protected int mScreenHeight;
+    protected int mStatusBarHeight;
+    protected boolean isNearestLeft = true;
+    protected float mPortraitY;
 
     public void setMagnetViewListener(MagnetViewListener magnetViewListener) {
         this.mMagnetViewListener = magnetViewListener;
@@ -53,7 +53,7 @@ public class FloatingMagnetView extends FrameLayout {
         init();
     }
 
-    private void init() {
+    protected void init() {
         mMoveAnimator = new MoveAnimator();
         mStatusBarHeight = SystemUtils.getStatusBarHeight(getContext());
         setClickable(true);
@@ -95,7 +95,7 @@ public class FloatingMagnetView extends FrameLayout {
         return System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD;
     }
 
-    private void updateViewPosition(MotionEvent event) {
+    protected void updateViewPosition(MotionEvent event) {
         setX(mOriginalX + event.getRawX() - mOriginalRawX);
         // 限制不可超出屏幕高度
         float desY = mOriginalY + event.getRawY() - mOriginalRawY;
@@ -108,7 +108,7 @@ public class FloatingMagnetView extends FrameLayout {
         setY(desY);
     }
 
-    private void changeOriginalTouchParams(MotionEvent event) {
+    protected void changeOriginalTouchParams(MotionEvent event) {
         mOriginalX = getX();
         mOriginalY = getY();
         mOriginalRawX = event.getRawX();
@@ -140,7 +140,7 @@ public class FloatingMagnetView extends FrameLayout {
         mMoveAnimator.start(moveDistance, Math.min(Math.max(0, y), mScreenHeight - getHeight()));
     }
 
-    private void clearPortraitY() {
+    protected void clearPortraitY() {
         mPortraitY = 0;
     }
 
@@ -158,10 +158,10 @@ public class FloatingMagnetView extends FrameLayout {
 
     protected class MoveAnimator implements Runnable {
 
-        private Handler handler = new Handler(Looper.getMainLooper());
-        private float destinationX;
-        private float destinationY;
-        private long startingTime;
+        protected Handler handler = new Handler(Looper.getMainLooper());
+        protected float destinationX;
+        protected float destinationY;
+        protected long startingTime;
 
         void start(float x, float y) {
             this.destinationX = x;
@@ -184,12 +184,12 @@ public class FloatingMagnetView extends FrameLayout {
             }
         }
 
-        private void stop() {
+        protected void stop() {
             handler.removeCallbacks(this);
         }
     }
 
-    private void move(float deltaX, float deltaY) {
+    protected void move(float deltaX, float deltaY) {
         setX(getX() + deltaX);
         setY(getY() + deltaY);
     }
@@ -210,7 +210,7 @@ public class FloatingMagnetView extends FrameLayout {
         }
     }
 
-    private void markPortraitY(boolean isLandscape) {
+    protected void markPortraitY(boolean isLandscape) {
         if (isLandscape) {
             mPortraitY = getY();
         }
