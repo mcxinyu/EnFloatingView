@@ -1,3 +1,6 @@
+[![](https://jitpack.io/v/mcxinyu/EnFloatingView.svg)](https://jitpack.io/#mcxinyu/EnFloatingView)
+
+
 ![Logo](https://raw.githubusercontent.com/leotyndale/EnFloatingView/master/preview/logo.png)
 
 EnFloatingView
