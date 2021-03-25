@@ -33,7 +33,4 @@ public interface IFloatingView {
     FloatingView customView(@LayoutRes int resource);
 
     FloatingView layoutParams(ViewGroup.LayoutParams params);
-
-    FloatingView listener(MagnetViewListener magnetViewListener);
-
 }

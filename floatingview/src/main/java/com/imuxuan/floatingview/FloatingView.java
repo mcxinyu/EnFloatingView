@@ -168,14 +168,6 @@ public class FloatingView implements IFloatingView {
         return this;
     }
 
-    @Override
-    public FloatingView listener(MagnetViewListener magnetViewListener) {
-        if (mEnFloatingView != null) {
-            mEnFloatingView.setMagnetViewListener(magnetViewListener);
-        }
-        return this;
-    }
-
     public FloatingView setLifeStateListener(LifeStateListener lifeStateListener) {
         mLifeStateListener = lifeStateListener;
         return this;

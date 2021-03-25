@@ -26,9 +26,7 @@ public class FloatingMagnetView extends FrameLayout {
     protected float mOriginalRawY;
     protected float mOriginalX;
     protected float mOriginalY;
-    protected MagnetViewListener mMagnetViewListener;
     protected static final int TOUCH_TIME_THRESHOLD = 150;
-    protected long mLastTouchDownTime;
     protected MoveAnimator mMoveAnimator;
     protected int mScreenWidth;
     protected int mScreenHeight;
@@ -36,9 +34,7 @@ public class FloatingMagnetView extends FrameLayout {
     protected boolean isNearestLeft = true;
     protected float mPortraitY;
 
-    public void setMagnetViewListener(MagnetViewListener magnetViewListener) {
-        this.mMagnetViewListener = magnetViewListener;
-    }
+    private boolean isWantClick;
 
     public FloatingMagnetView(Context context) {
         this(context, null);
@@ -61,38 +57,37 @@ public class FloatingMagnetView extends FrameLayout {
     }
 
     @Override
+    public boolean performClick() {
+        return super.performClick();
+    }
+
+    @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (event == null) {
-            return false;
-        }
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 changeOriginalTouchParams(event);
                 updateSize();
                 mMoveAnimator.stop();
-                break;
+                isWantClick = true;
+                postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        isWantClick = false;
+                    }
+                }, TOUCH_TIME_THRESHOLD);
+                return true;
             case MotionEvent.ACTION_MOVE:
                 updateViewPosition(event);
-                break;
+                return true;
             case MotionEvent.ACTION_UP:
                 clearPortraitY();
                 moveToEdge();
-                if (isOnClickEvent()) {
-                    dealClickEvent();
+                if (isWantClick) {
+                    return performClick();
                 }
-                break;
+                return true;
         }
-        return true;
-    }
-
-    protected void dealClickEvent() {
-        if (mMagnetViewListener != null) {
-            mMagnetViewListener.onClick(this);
-        }
-    }
-
-    protected boolean isOnClickEvent() {
-        return System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD;
+        return false;
     }
 
     protected void updateViewPosition(MotionEvent event) {
@@ -113,7 +108,6 @@ public class FloatingMagnetView extends FrameLayout {
         mOriginalY = getY();
         mOriginalRawX = event.getRawX();
         mOriginalRawY = event.getRawY();
-        mLastTouchDownTime = System.currentTimeMillis();
     }
 
     protected void updateSize() {
@@ -148,12 +142,6 @@ public class FloatingMagnetView extends FrameLayout {
         int middle = mScreenWidth / 2;
         isNearestLeft = getX() < middle;
         return isNearestLeft;
-    }
-
-    public void onRemove() {
-        if (mMagnetViewListener != null) {
-            mMagnetViewListener.onRemove(this);
-        }
     }
 
     public class MoveAnimator implements Runnable {
