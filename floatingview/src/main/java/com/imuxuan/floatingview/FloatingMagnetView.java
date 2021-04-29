@@ -75,6 +75,7 @@ public class FloatingMagnetView extends FrameLayout {
                         isWantClick = false;
                     }
                 }, TOUCH_TIME_THRESHOLD);
+                updateViewPosition(event);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 updateViewPosition(event);
