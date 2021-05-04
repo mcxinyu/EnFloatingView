@@ -26,7 +26,7 @@ public class FloatingMagnetView extends FrameLayout {
     protected float mOriginalRawY;
     protected float mOriginalX;
     protected float mOriginalY;
-    protected final int TOUCH_TIME_THRESHOLD = 200;
+    protected int mTouchTimeThreshold = 115;
     protected MoveAnimator mMoveAnimator;
     protected int mScreenWidth;
     protected int mScreenHeight;
@@ -53,6 +53,10 @@ public class FloatingMagnetView extends FrameLayout {
         mStatusBarHeight = SystemUtils.getStatusBarHeight(getContext());
         setClickable(true);
 //        updateSize();
+    }
+
+    public void setTouchTimeThreshold(int touchTimeThreshold) {
+        mTouchTimeThreshold = touchTimeThreshold;
     }
 
     @Override
@@ -84,7 +88,7 @@ public class FloatingMagnetView extends FrameLayout {
     }
 
     private boolean isClick() {
-        return (System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD);
+        return (System.currentTimeMillis() - mLastTouchDownTime < mTouchTimeThreshold);
     }
 
     protected void updateViewPosition(MotionEvent event) {
