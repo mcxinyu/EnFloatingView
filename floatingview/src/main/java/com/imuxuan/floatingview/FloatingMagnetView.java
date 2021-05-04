@@ -75,12 +75,18 @@ public class FloatingMagnetView extends FrameLayout {
             case MotionEvent.ACTION_UP:
                 clearPortraitY();
                 moveToEdge();
-                if (System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD) {
+                if (isClick()) {
                     return performClick();
                 }
                 return true;
         }
         return false;
+    }
+
+    private boolean isClick() {
+        return (System.currentTimeMillis() - mLastTouchDownTime < TOUCH_TIME_THRESHOLD) &&
+                (Math.abs(mOriginalX - mOriginalRawX) < 20 ||
+                        Math.abs(mOriginalY - mOriginalRawY) < 20);
     }
 
     protected void updateViewPosition(MotionEvent event) {
