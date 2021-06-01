@@ -71,7 +71,7 @@ public class FloatingMagnetView extends FrameLayout {
                 changeOriginalTouchParams(event);
                 updateSize();
                 mMoveAnimator.stop();
-                updateViewPosition(event);
+                // updateViewPosition(event);
                 return true;
             case MotionEvent.ACTION_MOVE:
                 updateViewPosition(event);
